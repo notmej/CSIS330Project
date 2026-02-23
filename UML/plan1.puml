@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+actor User
+
+rectangle "focus app" as focus {
+    
+    (focus session) as fs
+    (block apps)
+    (to-do list)
+    (statistics)
+    (reward)
+    (categorization)
+    (streak) 
+    '(currency management) as cm
+
+    ' (timer) .down.> (block apps): ""
+}
+
+
+User - (to-do list)
+User -down- (fs)
+User - statistics
+
+' All include (required fields)
+(fs) ..>  (block apps) : <<include>>
+(fs) ..>  (reward) : <<extend>>
+(to-do list) ..>  (reward) : <<include>>
+(streak) ..> (reward) : <<include>>
+
+
+'All extend fields
+(to-do list) ..>  (categorization) : <<include>>
+@enduml
