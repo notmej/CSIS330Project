@@ -1,102 +1,33 @@
 @startuml
 left to right direction
+actor User
 
-rectangle "Student focus app" as focus {
+rectangle "focus app" as focus {
     
     (focus session) as fs
-    (block apps) 
+    (block apps)
     (to-do list)
-    (user activity statistics) as s
+    (statistics)
     (reward)
     (categorization)
     (streak) 
-    (currency management/gamification) as cm
-    (energy)
-    (schedule)
-   
+    '(currency management) as cm
 
-    note right of (block apps)
-        Manual and/or Automatic
-        depends on users usage habits
-    end note
-    ' eg: Youtube isnt blocked but instagram is
-    ' user uses YouTube to doom scroll for a long time
-    ' youtube app gets blocked on the device. 
-    ' if they wish to use it they'll have the manually agree 
-    '   - only aplies with a pledge maybe? 
-    '     - like promise that you are using yt for education purposes and not entertainment
-
-    note right of (categorization)
-        daily check in
-        - user's categorized tasks get recommended based on:
-            - user's enegry level today
-            - due date of task (eg: assignment)
-    end note
-
-    note left of cm
-        gamified approach
-        theme is still 
-        being discussed.
-    end note
-
+    ' (timer) .down.> (block apps): ""
 }
 
-actor User
-' optionally categorized to-do list
-User -- (to-do list)
-' uer focus session, non essential apps (based on category such as entertainmenet)
-' are blocked from usage until end of timer
-User -- (fs)
-' user statistics based on all focus time, tasks s done, 
-' schedule followed and screen time statistics from phone's collected data
-User -- (s)
-' user can choose how to spend rewardded currency
-' (to be on a gamified module that a theme is yet to be decided)
-User - (cm)
-' user energy affects task reccomendadtion
-User -- (energy)
- ' user changes their schedule / calander according to when they are
- ' produvtive the most, notis are sent them to the user
-User -- (schedule)
-' user log in => streak increase
-User -- (streak)
-User -- (block apps)
+
+User - (to-do list)
+User -down- (fs)
+User - statistics
+
+' All include (required fields)
+(fs) ..>  (block apps) : <<include>>
+(fs) ..>  (reward) : <<extend>>
+(to-do list) ..>  (reward) : <<include>>
+(streak) ..> (reward) : <<include>>
 
 
-' every focus session gets put into statstics 
-(fs) ..> (s) : <<include>>
-' every streak increase gets put into statistics
-(streak) ..> (s) : <<include>>
-' every completed to-do list item gets added to statistics
-' each to-do list item:
-'  - (shown as list to go back and review tasks)
-'  - ( just a counter )
-(to-do list) ..> (s) : <<include>>
-
-
-' All include (required fields) (from base included)
-fs ..> (reward) : <<include>>  
-' completing any to-do list task provides a reward
-'  - high mental energy needed task => high reward
-'  - medium mental energy needed task => regular + bonus reward
-'  - low mental energy needed task => regular reward 
-(to-do list) ..> (reward) : <<include>>
-
-
-
-
-'All extend fields (from extention, to base):
-(block apps) <.. s : <<extend>>
-     'user has the option to categorize their tasks by thier energy level
-(to-do list) <..  (categorization) : <<extend>>
-     ' currency management is nota required function for the user to do
-     ' they may choos enot to use their currency 
-(reward) <.. (cm) : <<extend>>
-     ' Energy impacts what tasks are recommended to do:
-     ' eg: low energy = easier tasks 
-(energy) ..> (categorization) : <<extend>>  
-(schedule) ..> (categorization) : <<extend>>
-'(fs) <.. (streak) : <<extend>>
-fs <.. (block apps) : <<extend>>
-
+'All extend fields
+(to-do list) ..>  (categorization) : <<include>>
 @enduml
